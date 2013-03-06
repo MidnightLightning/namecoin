@@ -6,10 +6,11 @@
 # Laszlo Hanyecz (solar@heliacal.net)
 
 CXX=llvm-g++
-DEPSDIR=/Users/macosuser/bitcoin/deps
+DEPSDIR=/opt/local
 
 INCLUDEPATHS= \
- -I"$(DEPSDIR)/include"
+ -I"$(DEPSDIR)/include" \
+ -I"$(DEPSDIR)/include/db48"
 
 LIBPATHS= \
  -L"$(DEPSDIR)/lib"
@@ -17,11 +18,11 @@ LIBPATHS= \
 WXLIBS=$(shell $(DEPSDIR)/bin/wx-config --libs --static)
 
 LIBS= -dead_strip \
- $(DEPSDIR)/lib/libdb_cxx-4.8.a \
- $(DEPSDIR)/lib/libboost_system.a \
- $(DEPSDIR)/lib/libboost_filesystem.a \
- $(DEPSDIR)/lib/libboost_program_options.a \
- $(DEPSDIR)/lib/libboost_thread.a \
+ $(DEPSDIR)/lib/db48/libdb_cxx-4.8.a \
+ $(DEPSDIR)/lib/libboost_system-mt.a \
+ $(DEPSDIR)/lib/libboost_filesystem-mt.a \
+ $(DEPSDIR)/lib/libboost_program_options-mt.a \
+ $(DEPSDIR)/lib/libboost_thread-mt.a \
  $(DEPSDIR)/lib/libssl.a \
  $(DEPSDIR)/lib/libcrypto.a 
 
@@ -60,7 +61,7 @@ bitcoind: USE_UPNP:=0
 	endif
 	
 
-all: bitcoin
+all: namecoind
 
 
 obj/%.o: %.cpp $(HEADERS)
@@ -84,6 +85,9 @@ obj/test/%.o: test/%.cpp $(HEADERS)
 
 test_bitcoin: obj/test/test_bitcoin.o
 	$(CXX) $(CFLAGS) -o $@ $(LIBPATHS) $^ $(LIBS) -lboost_unit_test_framework
+
+namecoind: $(BASE_OBJS:obj/%=obj/nogui/%) obj/nogui/namecoin.o
+	$(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS)
 
 clean:
 	-rm -f bitcoin bitcoind test_bitcoin
