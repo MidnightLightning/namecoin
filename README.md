@@ -45,8 +45,12 @@ BUILDING
 
 OSX using Macports:
 
-sudo port install boost db48 openssl gcc44
+sudo port install boost +universal db48 +universal openssl +universal gcc44
 make -f makefile.osx
+
+The gcc/g++ version that comes with Apple's Xcode is v4.2, which can't compile the namecoin source. Therefore, the `gcc44` port is in the list, as it is new enough to compile.
+
+The universal variant is needed to ensure both 32-bit and 64-bit versions of the libraries exist on your system before compiling. If you already installed `boost`, `openssl` or `db48` without the `+universal` variant, you do need to reinstall them with that variant (which will recompile all their dependencies with `+universal` too).
 
 
 RUNNING
