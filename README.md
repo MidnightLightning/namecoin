@@ -43,7 +43,11 @@ Please read DESIGN-namecoind.md before proceeding.
 BUILDING
 ======================
 
-Building is only supported on Linux for now.  Follow the bitcoin build instructions.  Use "makefile.unix" - it will generate namecoind.  Usage is similar to bitcoind, plus new RPC calls for the new operations.  A GUI is on the roadmap.
+OSX using Macports:
+
+sudo port install boost db48 openssl gcc44
+make -f makefile.osx
+
 
 RUNNING
 ======================
